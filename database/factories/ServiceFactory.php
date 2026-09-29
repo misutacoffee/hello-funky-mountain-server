@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,7 @@ class ServiceFactory extends Factory
             'description' => fake()->paragraph(),
             'note' => fake()->paragraph(),
             'is_active' => true,
-            'user_uuid' => \App\Models\User::factory(),
+            'user_uuid' => User::inRandomOrder()->first()->uuid,
             'uuid' => \Illuminate\Support\Str::uuid(),
         ];
     }

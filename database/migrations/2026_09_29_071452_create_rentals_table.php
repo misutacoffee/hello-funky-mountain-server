@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('equipment_uuid')->constrained('equipment', 'uuid')->onDelete('cascade');
+            $table->foreignUuid('user_uuid')->constrained('users', 'uuid')->onDelete('cascade');
             $table->foreignUuid('contract_uuid')->constrained('contracts', 'uuid')->onDelete('cascade');
             $table->date('rental_date');
             $table->date('return_date')->nullable();
