@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('models', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->text('note')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->foreignUuid('manufacturer_uuid')->constrained('manufacturers', 'uuid')->onDelete('cascade');
+            $table->uuid('uuid')->unique();
             $table->timestamps();
         });
     }

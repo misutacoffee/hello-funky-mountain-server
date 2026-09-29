@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->text('note')->nullable();
+            $table->string('rental_rate')->nullable();
+            $table->string('rental_unit')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->foreignUuid('user_uuid')->constrained('users', 'uuid')->onDelete('cascade');
+            $table->uuid('uuid')->unique();
             $table->timestamps();
         });
     }
