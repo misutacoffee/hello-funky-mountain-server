@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Make extends Model
+class RentalEquipment extends Model
 {
     //
 }

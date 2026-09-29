@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('equipment_uuid')->constrained('equipment', 'uuid')->onDelete('cascade');
-            $table->foreignUuid('customer_uuid')->constrained('customers', 'uuid')->onDelete('cascade');
+            $table->foreignUuid('contract_uuid')->constrained('contracts', 'uuid')->onDelete('cascade');
             $table->date('rental_date');
             $table->date('return_date')->nullable();
             $table->text('description')->nullable();

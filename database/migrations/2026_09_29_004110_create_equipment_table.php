@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('serial_number')->nullable();
             $table->text('description')->nullable();
             $table->text('note')->nullable();
             $table->string('rental_rate')->nullable();

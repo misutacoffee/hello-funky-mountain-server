@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('manufacturer_models', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('display_name')->nullable();
             $table->text('description')->nullable();
             $table->text('note')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->foreignUuid('manufacturer_uuid')->constrained('manufacturers', 'uuid')->onDelete('cascade');
             $table->uuid('uuid')->unique();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('manufacturer_models');
     }
 };
