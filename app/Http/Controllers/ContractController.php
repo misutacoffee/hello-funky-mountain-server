@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Contract;
 
-class CustomerController extends Controller
+class ContractController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $contracts = Contract::orderBy('name')->get();
+        return response()->json($contracts);
     }
 
     /**
