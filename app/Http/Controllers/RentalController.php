@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Rental;
 
 class RentalController extends Controller
 {
@@ -11,7 +12,8 @@ class RentalController extends Controller
      */
     public function index()
     {
-        //
+        $rentals = Rental::get();
+        return response()->json($rentals);
     }
 
     /**

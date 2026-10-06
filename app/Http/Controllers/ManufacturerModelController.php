@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ManufacturerModel;
 
 class ManufacturerModelController extends Controller
 {
@@ -11,7 +12,8 @@ class ManufacturerModelController extends Controller
      */
     public function index()
     {
-        //
+        $manufacturerModels = ManufacturerModel::get();
+        return response()->json($manufacturerModels);
     }
 
     /**
