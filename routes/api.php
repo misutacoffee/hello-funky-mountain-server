@@ -12,6 +12,7 @@ use App\Http\Controllers\RentalController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'show']);
 Route::resource('/contracts', ContractController::class);
 Route::resource('/equipment', EquipmentController::class);
 Route::resource('/invoices', InvoiceController::class);
