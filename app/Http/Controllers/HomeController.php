@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Contract;
 use App\Models\Equipment;
 use App\Models\Invoice;
 use App\Models\Manufacturer;
@@ -14,6 +15,7 @@ class HomeController extends Controller
 {
     public function show()
     {
+        $contracts = Contract::get();
         $equipment = Equipment::get();
         $manufacturers = Manufacturer::get();
         $manufacturerModels = ManufacturerModel::get();
@@ -21,6 +23,7 @@ class HomeController extends Controller
         $rentals = Rental::get();
         $users = User::get();
         $homeData = [
+            'contracts' => $contracts,
             'equipment' => $equipment,
             'manufacturers' => $manufacturers,
             'manufacturerModels' => $manufacturerModels,
