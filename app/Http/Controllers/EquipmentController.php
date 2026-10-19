@@ -12,7 +12,7 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        $equipment = Equipment::all();
+        $equipment = Equipment::with(['manufacturerModel' => ['manufacturer']])->get();
         return response()->json($equipment);
     }
 
@@ -35,15 +35,19 @@ class EquipmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        $equipment = Equipment::with(['manufacturerModel' => ['manufacturer']])->where('uuid', $uuid)->first();
+        if (!$equipment) {
+            return response()->json(['message' => 'Equipment not found'], 404);
+        }
+        return response()->json($equipment);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $uuid)
     {
         //
     }
@@ -51,15 +55,18 @@ class EquipmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $uuid)
     {
-        //
+        // validation
+        $equipment = $request->all();
+        Equipment::updateOrCreate($equipment, ['uuid' => $uuid]);
+        return response()->json(['success' => true, 'message' => "Equipment successfully saved to the database."]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $uuid)
     {
         //
     }
