@@ -9,4 +9,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Manufacturer extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'note',
+        'is_active',
+        'uuid',
+    ];
+
+    public function manufacturerModels()
+    {
+        return $this->hasMany(ManufacturerModel::class, 'manufacturer_uuid', 'uuid');
+    }
 }
