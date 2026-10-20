@@ -54,7 +54,10 @@ class ManufacturerController extends Controller
      */
     public function update(Request $request, string $uuid)
     {
-        //
+        // validate
+        $manufacturer = $request->all();
+        Manufacturer::updateOrCreate($manufacturer, ['uuid' => $uuid]);
+        return response()->json(['success' => true, 'message' => "This manufacturer has been successfully saved to the database."]);
     }
 
     /**
@@ -62,6 +65,10 @@ class ManufacturerController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        // authorize 
+        // what about models? 
+        // what about equipment marked as models with this manufacturer?
+        Manufacturer::where('uuid', $uuid)->delete();
+        return response()->json(['success' => true, 'message' => "This manufacturer has been deleted from the database."]);
     }
 }
