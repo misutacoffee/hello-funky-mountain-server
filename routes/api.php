@@ -19,7 +19,7 @@ Route::resource('/contracts', ContractController::class);
 Route::resource('/equipment', EquipmentController::class);
 Route::resource('/invoices', InvoiceController::class);
 Route::resource('/manufacturers', ManufacturerController::class);
-Route::resource('/manufacturer-models', ManufacturerModelController::class);
 Route::resource('/messages', MessageController::class);
+Route::resource('/models', ManufacturerModelController::class);
 Route::resource('/notifications', NotificationController::class);
 Route::resource('/rentals', RentalController::class);
