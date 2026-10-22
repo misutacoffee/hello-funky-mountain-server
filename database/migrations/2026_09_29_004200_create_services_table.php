@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('note')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->uuid('user_uuid');
+            $table->foreignUuid('user_uuid')->constrained('users', 'uuid')->onDelete('cascade');
             $table->uuid('uuid')->unique();
             $table->timestamps();
         });
