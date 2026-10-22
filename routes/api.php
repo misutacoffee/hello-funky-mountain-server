@@ -23,3 +23,5 @@ Route::resource('/messages', MessageController::class);
 Route::resource('/models', ManufacturerModelController::class);
 Route::resource('/notifications', NotificationController::class);
 Route::resource('/rentals', RentalController::class);
+Route::get('/manufacturers/{uuid}/models', [ManufacturerModelController::class, 'indexByManufacturer']);
+Route::get('/manufacturers/{uuid}/models/create', [ManufacturerModelController::class, 'createByManufacturer']);

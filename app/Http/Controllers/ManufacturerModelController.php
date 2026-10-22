@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Manufacturer;
 use App\Models\ManufacturerModel;
 
 class ManufacturerModelController extends Controller
@@ -17,11 +18,29 @@ class ManufacturerModelController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function indexByManufacturer(string $manufacturerUuid)
+    {
+        $manufacturer = Manufacturer::where('uuid', $manufacturerUuid)->with('manufacturerModels')->first();
+        return response()->json($manufacturer);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function createByManufacturer(string $manufacturerUuid)
+    {
+        $manufacturer = Manufacturer::where('uuid', $manufacturerUuid)->with('manufacturerModels')->first();
+        return response()->json($manufacturer);
     }
 
     /**
@@ -35,15 +54,16 @@ class ManufacturerModelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        $model = ManufacturerModel::where('uuid', $uuid)->with('manufacturer')->first();
+        return response()->json($model);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $uuid)
     {
         //
     }
@@ -51,7 +71,7 @@ class ManufacturerModelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $uuid)
     {
         //
     }
@@ -59,7 +79,7 @@ class ManufacturerModelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $uuid)
     {
         //
     }
