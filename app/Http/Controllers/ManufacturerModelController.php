@@ -78,7 +78,7 @@ class ManufacturerModelController extends Controller
     {
         // validate 
         $model = $request->all();
-        ManufacturerModel::updateOrCreate($model, ['uuid' => $uuid]);
+        ManufacturerModel::updateOrCreate(['uuid' => $uuid], $model);
         return response()->json(['success' => true, 'message' => "This model has been saved to the database."]);
     }
 
