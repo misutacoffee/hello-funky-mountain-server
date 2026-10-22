@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('note')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->foreignUuid('contract_uuid')->constrained('contracts', 'uuid')->cascadeOnDelete();
+            $table->uuid('contract_uuid');
             $table->uuid('uuid')->unique();
             $table->timestamps();
         });

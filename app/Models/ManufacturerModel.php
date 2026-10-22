@@ -12,13 +12,11 @@ class ManufacturerModel extends Model
 
     protected $fillable = [
         'name',
-        'manufacturer_uuid',
-        'manufacturer_model_uuid',
-        'serial_number',
-        'purchase_date',
-        'warranty_expiration_date',
-        'status',
-        // Add other fillable attributes as needed
+        'description', 
+        'note', 
+        'is_active', 
+        'manufacturer_uuid', 
+        'uuid', 
     ];
 
     public function manufacturer()

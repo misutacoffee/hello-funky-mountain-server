@@ -31,7 +31,8 @@ class ManufacturerModelController extends Controller
      */
     public function create()
     {
-        //
+        $manufacturers = Manufacturer::orderBy('name')->get();
+        return response()->json(compact('manufacturers'));
     }
 
     /**
@@ -65,7 +66,9 @@ class ManufacturerModelController extends Controller
      */
     public function edit(string $uuid)
     {
-        //
+        $manufacturers = Manufacturer::orderBy('name')->get();
+        $model = ManufacturerModel::where('uuid', $uuid)->with('manufacturer')->first();
+        return response()->json(compact('manufacturers', 'model'));
     }
 
     /**
@@ -73,7 +76,10 @@ class ManufacturerModelController extends Controller
      */
     public function update(Request $request, string $uuid)
     {
-        //
+        // validate 
+        $model = $request->all();
+        ManufacturerModel::updateOrCreate($model, ['uuid' => $uuid]);
+        return response()->json(['success' => true, 'message' => "This model has been saved to the database."]);
     }
 
     /**
