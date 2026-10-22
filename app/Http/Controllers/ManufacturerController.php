@@ -56,7 +56,7 @@ class ManufacturerController extends Controller
     {
         // validate
         $manufacturer = $request->all();
-        Manufacturer::updateOrCreate($manufacturer, ['uuid' => $uuid]);
+        Manufacturer::updateOrCreate(['uuid' => $uuid], $manufacturer);
         return response()->json(['success' => true, 'message' => "This manufacturer has been successfully saved to the database."]);
     }
 
