@@ -34,5 +34,9 @@ class DatabaseSeeder extends Seeder
         RentalEquipment::factory(10)->create();
         RentalInvoice::factory(10)->create();
         Service::factory(10)->create();
+        // 
+        $this->call([
+            CategorySeeder::class, 
+        ]);
     }
 }

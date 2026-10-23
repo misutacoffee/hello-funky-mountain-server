@@ -21,6 +21,7 @@ class ManufacturerModelFactory extends Factory
         return [
 
             'name' => fake()->word(),
+            'type' => fake()->words(2, true), 
             'description' => fake()->paragraph(),
             'note' => fake()->paragraph(),
             'is_active' => true,

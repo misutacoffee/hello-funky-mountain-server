@@ -25,6 +25,7 @@ class EquipmentFactory extends Factory
             'description' => fake()->paragraph(),
             'note' => fake()->paragraph(),
             'serial_number' => Str::random(10),
+            'type' => fake()->words(2, true), 
             'is_active' => true,
             'user_uuid' => User::inRandomOrder()->first()->uuid,
             'manufacturer_model_uuid' => ManufacturerModel::inRandomOrder()->first()->uuid,

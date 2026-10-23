@@ -12,7 +12,7 @@ class ManufacturerController extends Controller
      */
     public function index()
     {
-        $manufacturers = Manufacturer::get();
+        $manufacturers = Manufacturer::orderBy('name')->get();
         return response()->json($manufacturers);
     }
 

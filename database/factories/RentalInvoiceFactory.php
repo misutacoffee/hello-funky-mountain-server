@@ -19,7 +19,7 @@ class RentalInvoiceFactory extends Factory
      */
     public function definition(): array
     {
-        $amount = fake()->randomFloat(2);
+        $amount = fake()->randomFloat(2, 1, 99999999);
         $tax = $amount * 0.08;
         return [
             'rental_uuid' => Rental::inRandomOrder()->first()->uuid, 
