@@ -6,5 +6,30 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    //
+    
+    public function login(Request $request)
+    {
+        
+    }
+    
+    public function logout(Request $request)
+    {
+        
+    }
+    
+    public function forgotPassword(Request $request)
+    {
+        
+    }
+
+    public function passwordReset(Request $request)
+    {
+        
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        
+    }
+
 }

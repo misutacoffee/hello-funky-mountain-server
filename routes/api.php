@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\InvoiceController;
@@ -25,3 +26,8 @@ Route::resource('/notifications', NotificationController::class);
 Route::resource('/rentals', RentalController::class);
 Route::get('/manufacturers/{uuid}/models', [ManufacturerModelController::class, 'indexByManufacturer']);
 Route::get('/manufacturers/{uuid}/models/create', [ManufacturerModelController::class, 'createByManufacturer']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/password-reset', [AuthController::class, 'passwordReset']);
+Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
