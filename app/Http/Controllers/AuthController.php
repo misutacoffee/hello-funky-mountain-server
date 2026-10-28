@@ -60,8 +60,8 @@ class AuthController extends Controller
             ], 
         ]);
         $user = User::create($request->all());
-        // token 
-        return response()->json(['user' => $user, 'success' => true, 'message' => "User successfully registered."]);
+        $token = $user->createToken('token')->accessToken;
+        return response()->json(['user' => $user, 'token' => $token, 'success' => true, 'message' => "User successfully registered."]);
     }
 
     public function verifyEmail(Request $request)
