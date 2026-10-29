@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 
@@ -11,7 +12,34 @@ class AuthController extends Controller
     
     public function login(Request $request)
     {
-        
+        $request->validate([
+            'email' => [
+                'required', 
+                'string', 
+                'email', 
+            ], 
+            'password' => [
+                'required', 
+                'string', 
+            ], 
+        ]);
+        $credentials = $request->all();
+        if(Auth::attempt($credentials)){
+            $user = Auth::user();
+            $token = $user->createToken('token')->accessToken;
+            return response()->json([
+                'success' => true, 
+                'message' => "Login successful.", 
+                'user' => $user, 
+                'token' => $token, 
+            ]);
+        }else{
+            $user = Auth::user();
+            return response()->json([
+                'success' => false, 
+                'message' => "Login failed.", 
+            ]);
+        }
     }
     
     public function logout(Request $request)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Equipment;
 
 class EquipmentController extends Controller
@@ -12,7 +13,11 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        $equipment = Equipment::with(['manufacturerModel' => ['manufacturer']])->get();
+        if(Auth::check()){
+            $equipment = Equipment::where('user_uuid', Auth::user()->uuid)->with(['manufacturerModel' => ['manufacturer']])->get();
+        }else{
+            $equipment = Equipment::with(['manufacturerModel' => ['manufacturer']])->get();
+        }
         return response()->json($equipment);
     }
 
