@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 use App\Mail\PasswordResetNotification;
@@ -56,14 +58,47 @@ class AuthController extends Controller
         ]);
         $user = User::where('email', $request->email)->first();
         if($user){
-            Mail::to($user->email)->send(new PasswordResetNotification($user));
+            $token = bin2hex(random_bytes(32));
+            DB::table('password_reset_tokens')->insert(['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]);
+            $url = config('app.url').'/password-reset?token='.$token.'&email='.urlencode($user->email);
+            Mail::to($user->email)->send(new PasswordResetNotification($user, $url));
         }
         return response()->json(['user' => $user, 'success' => true, 'message' => "Please check your inbox for a password reset notification."]);
     }
 
-    public function passwordReset(Request $request)
+    public function resetPassword(Request $request)
     {
-        
+        $request->validate([
+            'token' => [
+                'required', 
+                'string', 
+            ], 
+            'email' => [
+                'required', 
+                'string', 
+                'email', 
+            ], 
+            'password' => [
+                'required', 
+                'string', 
+                'confirmed:confirm_password', 
+                Password::min(8)->max(256)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), 
+                ], 
+            'confirm_password' => [
+                'required', 
+                'string', 
+            ], 
+        ]);
+        $ok = DB::table('password_reset_tokens')->where(['email' => $request->email],['token' => Hash::make($request->token)])->orderBy('created_at', 'desc')->first();
+        if($ok){
+            $user = User::where('email', $request->email)->first();
+            $user->password = Hash::make($request->password);
+            $user->save();
+            $token = $user->createToken('token')->accessToken;
+            return response()->json(['user' => $user, 'token' => $token, 'success' => true, 'message' => "Password successfully updated to the database."]);
+        }else{
+            return response()->json(['success' => false, 'message' => "Password failed to be update."]);
+        }
     }
 
     public function register(Request $request)

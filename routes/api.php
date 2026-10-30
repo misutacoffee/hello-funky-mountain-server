@@ -29,6 +29,6 @@ Route::get('/manufacturers/{uuid}/models/create', [ManufacturerModelController::
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/password-reset', [AuthController::class, 'passwordReset']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-email', [AuthController::class, 'verifyEmail']);

@@ -6,6 +6,8 @@
         {{ $email }}
     </p>
     <p>
-        Order your soul. Reduce your wants. - Augustine 
+        <a href="{{ $url }}">
+            Password Reset Link
+        </a>
     </p>
 </div>

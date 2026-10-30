@@ -19,6 +19,7 @@ class PasswordResetNotification extends Mailable
      */
     public function __construct(
         protected $user, 
+        protected $url, 
     )
     {
         //
@@ -44,7 +45,7 @@ class PasswordResetNotification extends Mailable
             with: [
                 'name' => $this->user->name,
                 'email' => $this->user->email,
-                // token
+                'url' => $this->url, 
             ]
         );
     }
