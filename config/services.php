@@ -42,4 +42,10 @@ return [
         'scheme' => 'https', 
     ], 
 
+    'mailtrap' => [
+        'username' => env('MAILTRAP_USERNAME'), 
+        'password' => env('MAILTRAP_PASSWORD'), 
+        'host' => env('MAILTRAP_HOST'), 
+    ]
+
 ];

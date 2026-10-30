@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
+use App\Mail\PasswordResetNotification;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -49,7 +51,14 @@ class AuthController extends Controller
     
     public function forgotPassword(Request $request)
     {
-        
+        $request->validate([
+            'email' => 'required | email', 
+        ]);
+        $user = User::where('email', $request->email)->first();
+        if($user){
+            Mail::to($user->email)->send(new PasswordResetNotification($user));
+        }
+        return response()->json(['user' => $user, 'success' => true, 'message' => "Please check your inbox for a password reset notification."]);
     }
 
     public function passwordReset(Request $request)
