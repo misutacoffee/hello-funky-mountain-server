@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DevController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\InvoiceController;
@@ -32,3 +33,5 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
+Route::get('/authenticated-test-request', [DevController::class, 'authenticatedTestRequest']);
+Route::get('/unauthenticated-test-request', [DevController::class, 'unauthenticatedTestRequest']);
