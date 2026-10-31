@@ -48,9 +48,26 @@ class AuthController extends Controller
     
     public function logout(Request $request)
     {
-        
+        $user = $request->user();
+
+        // Revoke all Sanctum access tokens
+        $user->tokens()->delete();
+
+        // Log out the current session
+        Auth::guard('web')->logout();
+
+        // Invalidate the session
+        $request->session()->invalidate();
+
+        // Regenerate the CSRF token
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully logged out.',
+        ]);
     }
-    
+
     public function forgotPassword(Request $request)
     {
         $request->validate([
@@ -59,7 +76,12 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         if($user){
             $token = bin2hex(random_bytes(32));
-            DB::table('password_reset_tokens')->insert(['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]);
+            // DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+            // DB::table('password_reset_tokens')->insert(['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]);
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email], 
+                ['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]
+            );
             $url = config('app.url').'/password-reset?token='.$token.'&email='.urlencode($user->email);
             Mail::to($user->email)->send(new PasswordResetNotification($user, $url));
         }
@@ -89,12 +111,13 @@ class AuthController extends Controller
                 'string', 
             ], 
         ]);
-        $ok = DB::table('password_reset_tokens')->where(['email' => $request->email],['token' => Hash::make($request->token)])->orderBy('created_at', 'desc')->first();
-        if($ok){
+        $resetToken = DB::table('password_reset_tokens')->where(['email' => $request->email],['token' => Hash::make($request->token)])->orderBy('created_at', 'desc')->first();
+        if($resetToken){
             $user = User::where('email', $request->email)->first();
             $user->password = Hash::make($request->password);
             $user->save();
             $token = $user->createToken('token')->accessToken;
+            $resetToken->delete();
             return response()->json(['user' => $user, 'token' => $token, 'success' => true, 'message' => "Password successfully updated to the database."]);
         }else{
             return response()->json(['success' => false, 'message' => "Password failed to be update."]);
@@ -138,7 +161,7 @@ class AuthController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        
+        // 
     }
 
 }
