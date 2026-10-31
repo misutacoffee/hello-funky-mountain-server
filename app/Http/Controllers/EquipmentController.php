@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Equipment;
+use App\Models\Manufacturer;
+use App\Models\ManufacturerModel;
 
 class EquipmentController extends Controller
 {
@@ -24,9 +26,12 @@ class EquipmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $user = $request->user();
+        $manufacturers = Manufacturer::orderBy('name')->get();
+        $models = ManufacturerModel::orderBy('name')->get();
+        return response()->json(['user' => $user, 'manufacturers' => $manufacturers, 'models' => $models]);
     }
 
     /**
@@ -52,9 +57,13 @@ class EquipmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $uuid)
+    public function edit(Request $request, string $uuid)
     {
-        //
+        $user = $request->user();
+        $equipment = Equipment::where('uuid', $uuid)->first();
+        $manufacturers = Manufacturer::orderBy('name')->get();
+        $models = ManufacturerModel::orderBy('name')->get();
+        return response()->json(['equipment' => $equipment, 'user' => $user, 'manufacturers' => $manufacturers, 'models' => $models]);
     }
 
     /**
