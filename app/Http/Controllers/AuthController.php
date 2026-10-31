@@ -30,7 +30,7 @@ class AuthController extends Controller
         $credentials = $request->all();
         if(Auth::attempt($credentials)){
             $user = Auth::user();
-            $token = $user->createToken('token')->accessToken;
+            $token = $user->createToken('token')->plainTextToken;
             return response()->json([
                 'success' => true, 
                 'message' => "Login successful.", 
@@ -49,23 +49,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $user = $request->user();
-
-        // Revoke all Sanctum access tokens
         $user->tokens()->delete();
-
-        // Log out the current session
-        Auth::guard('web')->logout();
-
-        // Invalidate the session
-        $request->session()->invalidate();
-
-        // Regenerate the CSRF token
-        $request->session()->regenerateToken();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully logged out.',
-        ]);
+        return response()->json(['success' => true, 'message' => 'Successfully logged out.']);
     }
 
     public function forgotPassword(Request $request)
