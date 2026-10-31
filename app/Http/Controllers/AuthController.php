@@ -140,7 +140,7 @@ class AuthController extends Controller
             ], 
         ]);
         $user = User::create($request->all());
-        $token = $user->createToken('token')->accessToken;
+        $token = $user->createToken('token')->plainTextToken;
         return response()->json(['user' => $user, 'token' => $token, 'success' => true, 'message' => "User successfully registered."]);
     }
 

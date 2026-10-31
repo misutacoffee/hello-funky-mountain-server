@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rental_invoices', function (Blueprint $table) {
             $table->id();
-            $table->uuid('rental_uuid');
+            $table->uuid('rental_uuid')->nullable();
             $table->string('purchase_order_number')->nullable();
             $table->date('invoice_date')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->date('due_date')->nullable();
             $table->date('paid_date')->nullable();
+            $table->foreignUuid('user_uuid')->constrained('users', 'uuid')->onDelete('cascade');
             $table->uuid('uuid')->unique();
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Model;
 use App\Models\Rental;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -30,6 +31,7 @@ class RentalInvoiceFactory extends Factory
             'invoice_date' => fake()->dateTimeBetween('-1 year', 'now'), 
             'due_date' => fake()->dateTimeBetween('-1 year', 'now'), 
             'paid_date' => fake()->dateTimeBetween('-1 year', 'now'), 
+            'user_uuid' => User::inRandomOrder()->first()->uuid,
             'uuid' => Str::uuid(), 
         ];
     }

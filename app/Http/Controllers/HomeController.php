@@ -15,13 +15,14 @@ class HomeController extends Controller
 {
     public function show(Request $request)
     {
-        $contracts = Contract::get();
-        $equipment = Equipment::get();
-        $manufacturers = Manufacturer::get();
-        $manufacturerModels = ManufacturerModel::get();
-        $invoices = Invoice::get();
-        $rentals = Rental::get();
-        $users = User::get();
+        $user = $request->user();
+        $contracts = Contract::where('user_uuid', $user->uuid)->orderBy('name')->get();
+        $equipment = Equipment::where('user_uuid', $user->uuid)->orderBy('name')->get();
+        $manufacturers = Manufacturer::orderBy('name')->get();
+        $manufacturerModels = ManufacturerModel::orderBy('name')->get();
+        $invoices = Invoice::where('user_uuid', $user->uuid)->get();
+        $rentals = Rental::where('user_uuid', $user->uuid)->get();
+        $users = User::orderBy('name')->get();
         $homeData = [
             'contracts' => $contracts,
             'equipment' => $equipment,
