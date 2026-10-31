@@ -13,7 +13,7 @@ use App\Models\User;
 
 class HomeController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
         $contracts = Contract::get();
         $equipment = Equipment::get();
