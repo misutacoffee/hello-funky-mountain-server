@@ -31,7 +31,7 @@ class ManufacturerModelController extends Controller
      */
     public function create()
     {
-        $manufacturers = Manufacturer::orderBy('name')->get();
+        $manufacturers = Manufacturer::get();
         return response()->json(compact('manufacturers'));
     }
 
@@ -66,7 +66,7 @@ class ManufacturerModelController extends Controller
      */
     public function edit(string $uuid)
     {
-        $manufacturers = Manufacturer::orderBy('name')->get();
+        $manufacturers = Manufacturer::get();
         $model = ManufacturerModel::where('uuid', $uuid)->with('manufacturer')->first();
         return response()->json(compact('manufacturers', 'model'));
     }

@@ -29,8 +29,8 @@ class EquipmentController extends Controller
     public function create(Request $request)
     {
         $user = $request->user();
-        $manufacturers = Manufacturer::orderBy('name')->get();
-        $models = ManufacturerModel::orderBy('name')->get();
+        $manufacturers = Manufacturer::get();
+        $models = ManufacturerModel::get();
         return response()->json(['user' => $user, 'manufacturers' => $manufacturers, 'models' => $models]);
     }
 
@@ -61,8 +61,8 @@ class EquipmentController extends Controller
     {
         $user = $request->user();
         $equipment = Equipment::where('uuid', $uuid)->first();
-        $manufacturers = Manufacturer::orderBy('name')->get();
-        $models = ManufacturerModel::orderBy('name')->get();
+        $manufacturers = Manufacturer::get();
+        $models = ManufacturerModel::get();
         return response()->json(['equipment' => $equipment, 'user' => $user, 'manufacturers' => $manufacturers, 'models' => $models]);
     }
 

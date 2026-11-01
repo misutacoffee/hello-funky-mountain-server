@@ -12,7 +12,7 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $contracts = Contract::orderBy('name')->get();
+        $contracts = Contract::get();
         return response()->json($contracts);
     }
 
