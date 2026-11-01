@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Manufacturer;
 
 class ManufacturerController extends Controller
@@ -55,6 +56,20 @@ class ManufacturerController extends Controller
     public function update(Request $request, string $uuid)
     {
         // validate
+        $request->validate([
+            'name' => [
+                'required', 
+                'string', 
+                // Rule::unique('manufacturers', 'name')->where(function ($query) use ($request) {
+                //     return $query->whereRaw('LOWER(name) = ?', [strtolower($request->name)]);
+                // }),
+            ],
+            'description' => 'nullable|string|max:1000',
+            'note' => 'nullable|string|max:1000',
+            // 'website' => 'nullable|url|max:255', 
+            'is_active' => 'required|boolean', 
+            'uuid' => 'required|uuid',
+        ]);
         $manufacturer = $request->all();
         Manufacturer::updateOrCreate(['uuid' => $uuid], $manufacturer);
         return response()->json(['success' => true, 'message' => "This manufacturer has been successfully saved to the database."]);
