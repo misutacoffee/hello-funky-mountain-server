@@ -14,6 +14,7 @@ class Manufacturer extends Model
         'name',
         'description',
         'note',
+        'website',
         'is_active',
         'uuid',
     ];

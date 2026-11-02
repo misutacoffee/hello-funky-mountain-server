@@ -9,4 +9,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Contract extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'display_name',
+        'phone',
+        'email',
+        'primary_address',
+        'secondary_address',
+        'tertiary_address',
+        'city',
+        'state',
+        'zip',
+        'description',
+        'note',
+        'is_active',
+        'user_uuid',
+        'uuid',
+    ];
 }
