@@ -64,8 +64,8 @@ class ManufacturerController extends Controller
                 //     return $query->whereRaw('LOWER(name) = ?', [strtolower($request->name)]);
                 // }),
             ],
-            'description' => 'nullable|string|max:1000',
-            'note' => 'nullable|string|max:1000',
+            'description' => 'nullable|string',
+            'note' => 'nullable|string',
             // 'website' => 'nullable|url|max:255', 
             'is_active' => 'required|boolean', 
             'uuid' => 'required|uuid',
