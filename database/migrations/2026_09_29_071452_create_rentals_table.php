@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
-            $table->date('rental_date');
+            $table->date('rental_date')->nullable();
             $table->date('return_date')->nullable();
             $table->text('description')->nullable();
             $table->text('note')->nullable();

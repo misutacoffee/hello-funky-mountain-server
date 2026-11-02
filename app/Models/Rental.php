@@ -11,12 +11,18 @@ class Rental extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_uuid',
-        'contract_uuid',
         'rental_date',
         'return_date',
         'description',
         'note',
+        'contract_uuid',
+        'user_uuid',
         'uuid',
     ];
+
+    public function contract()
+    {
+        return $this->hasOne(Contract::class, 'uuid', 'contract_uuid');
+    }
+
 }

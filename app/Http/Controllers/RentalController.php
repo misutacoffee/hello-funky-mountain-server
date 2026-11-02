@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Contract;
 use App\Models\Rental;
 
 class RentalController extends Controller
@@ -10,18 +11,21 @@ class RentalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rentals = Rental::get();
+        $user = $request->user();
+        $rentals = Rental::where('user_uuid', $user->uuid)->with('contract')->get();
         return response()->json($rentals);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $user = $request->user();
+        $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        return response()->json(['contracts' => $contracts]);
     }
 
     /**
@@ -29,37 +33,61 @@ class RentalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rental_date' => 'nullable|string', 
+            'return_date' => 'nullable|string', 
+            'description' => 'nullable|string', 
+            'note' => 'nullable|string', 
+            'contract_uuid' => 'required|uuid', 
+            'user_uuid' => 'required|uuid', 
+            'uuid' => 'required|uuid', 
+        ]);
+        $rental = Rental::create($request->all());
+        return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully stored to the database."]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        $rental = Rental::where('uuid', $uuid)->with('contract')->first();
+        return response()->json($rental);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $uuid)
     {
-        //
+        $user = $request->user();
+        $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        $rental = Rental::where('uuid', $uuid)->with('contract')->first();
+        return response()->json(['contracts' => $contracts, 'rental' => $rental]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $uuid)
     {
-        //
+        $request->validate([
+            'rental_date' => 'nullable|string', 
+            'return_date' => 'nullable|string', 
+            'description' => 'nullable|string', 
+            'note' => 'nullable|string', 
+            'contract_uuid' => 'required|uuid', 
+            'user_uuid' => 'required|uuid', 
+            'uuid' => 'required|uuid', 
+        ]);
+        $rental = Rental::where('uuid', $uuid)->update($request->all());
+        return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully updated to the database."]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $uuid)
     {
         //
     }
