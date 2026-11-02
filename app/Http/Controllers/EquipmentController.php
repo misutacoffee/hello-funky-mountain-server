@@ -60,7 +60,7 @@ class EquipmentController extends Controller
     public function edit(Request $request, string $uuid)
     {
         $user = $request->user();
-        $equipment = Equipment::where('uuid', $uuid)->first();
+        $equipment = Equipment::where('uuid', $uuid)->with('manufacturer', 'manufacturerModel')->first();
         $manufacturers = Manufacturer::get();
         $models = ManufacturerModel::get();
         return response()->json(['equipment' => $equipment, 'user' => $user, 'manufacturers' => $manufacturers, 'models' => $models]);
@@ -71,9 +71,22 @@ class EquipmentController extends Controller
      */
     public function update(Request $request, string $uuid)
     {
-        // validation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'serial_number' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'note' => 'nullable|string',
+            'rental_rate' => 'nullable|numeric',
+            'rental_unit' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'is_active' => 'nullable|boolean',
+            'user_uuid' => 'required|uuid',
+            'manufacturer_model_uuid' => 'required|uuid',
+            'uuid' => 'required|uuid',
+        ]);
         $equipment = $request->all();
-        Equipment::updateOrCreate($equipment, ['uuid' => $uuid]);
+        Equipment::updateOrCreate(['uuid' => $uuid], $equipment);
         return response()->json(['success' => true, 'message' => "Equipment successfully saved to the database."]);
     }
 

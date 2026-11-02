@@ -12,17 +12,26 @@ class Equipment extends Model
 
     protected $fillable = [
         'name',
-        'manufacturer_uuid',
-        'manufacturer_model_uuid',
         'serial_number',
-        'purchase_date',
-        'warranty_expiration_date',
-        'status',
-        // Add other fillable attributes as needed
+        'type',
+        'description',
+        'note',
+        'rental_rate',
+        'rental_unit',
+        'status', 
+        'is_active',
+        'user_uuid',
+        'manufacturer_model_uuid',
+        'uuid',
     ];
 
     public function manufacturerModel()
     {
-        return $this->belongsTo(ManufacturerModel::class, 'manufacturer_model_uuid', 'uuid');
+        return $this->hasOne(ManufacturerModel::class, 'uuid','manufacturer_model_uuid');
+    }
+
+    public function manufacturer()
+    {
+        return $this->hasOneThrough(Manufacturer::class, ManufacturerModel::class, 'uuid', 'uuid', 'manufacturer_model_uuid', 'manufacturer_uuid');
     }
 }
