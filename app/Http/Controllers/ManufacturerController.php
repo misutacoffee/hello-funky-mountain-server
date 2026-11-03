@@ -22,7 +22,7 @@ class ManufacturerController extends Controller
      */
     public function create()
     {
-        //
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -30,7 +30,16 @@ class ManufacturerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'nullable|string', 
+            'note' => 'nullable|string', 
+            'website' => 'nullable|string', 
+            'is_active' => 'required|boolean', 
+            'uuid' => 'required|uuid', 
+        ]);
+        $manufacturer = Manufacturer::create($request->all());
+        return response()->json(['manufacturer' => $manufacturer, 'success' => true, 'message' => "Manufacturer successfully stored to the database."]);
     }
 
     /**
@@ -47,7 +56,8 @@ class ManufacturerController extends Controller
      */
     public function edit(string $uuid)
     {
-        //
+        $manufacturer = Manufacturer::where('uuid', $uuid)->first();
+        return response()->json($manufacturer);
     }
 
     /**
@@ -55,24 +65,16 @@ class ManufacturerController extends Controller
      */
     public function update(Request $request, string $uuid)
     {
-        // validate
         $request->validate([
-            'name' => [
-                'required', 
-                'string', 
-                // Rule::unique('manufacturers', 'name')->where(function ($query) use ($request) {
-                //     return $query->whereRaw('LOWER(name) = ?', [strtolower($request->name)]);
-                // }),
-            ],
-            'description' => 'nullable|string',
-            'note' => 'nullable|string',
-            // 'website' => 'nullable|url|max:255', 
+            'name' => 'required|string',
+            'description' => 'nullable|string', 
+            'note' => 'nullable|string', 
+            'website' => 'nullable|string', 
             'is_active' => 'required|boolean', 
-            'uuid' => 'required|uuid',
+            'uuid' => 'required|uuid', 
         ]);
-        $manufacturer = $request->all();
-        Manufacturer::updateOrCreate(['uuid' => $uuid], $manufacturer);
-        return response()->json(['success' => true, 'message' => "This manufacturer has been successfully saved to the database."]);
+        $manufacturer = Manufacturer::where('uuid', $uuid)->update($request->all());
+        return response()->json(['manufacturer' => $manufacturer, 'success' => true, 'message' => "Manufacturer successfully updated to the database."]);
     }
 
     /**

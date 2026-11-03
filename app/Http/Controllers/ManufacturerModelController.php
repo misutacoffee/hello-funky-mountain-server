@@ -49,7 +49,17 @@ class ManufacturerModelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'type' => 'nullable|string',  
+            'description' => 'nullable|string',  
+            'note' => 'nullable|string',  
+            'is_active' => 'required|boolean', 
+            'manufacturer_uuid' => 'required|uuid', 
+            'uuid' => 'required|uuid', 
+        ]);
+        $model = ManufacturerModel::create($request->all());
+        return response()->json(['model' => $model, 'success' => true, 'message' => "Model successfully stored to the database."]);
     }
 
     /**
@@ -76,10 +86,17 @@ class ManufacturerModelController extends Controller
      */
     public function update(Request $request, string $uuid)
     {
-        // validate 
-        $model = $request->all();
-        ManufacturerModel::updateOrCreate(['uuid' => $uuid], $model);
-        return response()->json(['success' => true, 'message' => "This model has been saved to the database."]);
+        $request->validate([
+            'name' => 'required|string',
+            'type' => 'nullable|string',  
+            'description' => 'nullable|string',  
+            'note' => 'nullable|string',  
+            'is_active' => 'required|boolean', 
+            'manufacturer_uuid' => 'required|uuid', 
+            'uuid' => 'required|uuid', 
+        ]);
+        $model = ManufacturerModel::where('uuid', $uuid)->update($request->all());
+        return response()->json(['model' => $model, 'success' => true, 'message' => "Model successfully updated to the database."]);
     }
 
     /**
