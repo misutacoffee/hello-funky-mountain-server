@@ -39,7 +39,22 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'serial_number' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'note' => 'nullable|string',
+            'rental_rate' => 'nullable|numeric',
+            'rental_unit' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'is_active' => 'nullable|boolean',
+            'user_uuid' => 'required|uuid',
+            'manufacturer_model_uuid' => 'required|uuid',
+            'uuid' => 'required|uuid',
+        ]);
+        $equipment = Equipment::create($request->all());
+        return response()->json(['equipment' => $equipment, 'success' => true, 'message' => "Equipment successfully stored to the database."]);
     }
 
     /**
@@ -85,9 +100,8 @@ class EquipmentController extends Controller
             'manufacturer_model_uuid' => 'required|uuid',
             'uuid' => 'required|uuid',
         ]);
-        $equipment = $request->all();
-        Equipment::updateOrCreate(['uuid' => $uuid], $equipment);
-        return response()->json(['success' => true, 'message' => "Equipment successfully saved to the database."]);
+        $equipment = Equipment::where('uuid', $uuid)->update($request->all());
+        return response()->json(['equipment' => $equipment, 'success' => true, 'message' => "Equipment successfully updated to the database."]);
     }
 
     /**
