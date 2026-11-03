@@ -25,4 +25,9 @@ class Rental extends Model
         return $this->hasOne(Contract::class, 'uuid', 'contract_uuid');
     }
 
+    public function rentalEquipment()
+    {
+        return $this->hasMany(RentalEquipment::class, 'rental_uuid', 'uuid');   
+    }
+
 }

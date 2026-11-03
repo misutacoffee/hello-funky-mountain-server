@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contract;
+use App\Models\Equipment;
+use App\Models\Invoice;
 use App\Models\Rental;
 
 class RentalController extends Controller
@@ -49,10 +51,13 @@ class RentalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $uuid)
+    public function show(Request $request, string $uuid)
     {
-        $rental = Rental::where('uuid', $uuid)->with('contract')->first();
-        return response()->json($rental);
+        $user = $request->user();
+        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get();
+        $invoices = Invoice::where('rental_uuid', $uuid)->get();
+        $rental = Rental::where('uuid', $uuid)->with('contract', 'rentalEquipment')->first();
+        return response()->json(compact('equipment', 'invoices', 'rental'));
     }
 
     /**

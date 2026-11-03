@@ -25,7 +25,7 @@ class Equipment extends Model
         'uuid',
     ];
 
-    public function manufacturerModel()
+    public function model()
     {
         return $this->hasOne(ManufacturerModel::class, 'uuid','manufacturer_model_uuid');
     }
