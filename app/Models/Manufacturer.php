@@ -19,7 +19,7 @@ class Manufacturer extends Model
         'uuid',
     ];
 
-    public function manufacturerModels()
+    public function models()
     {
         return $this->hasMany(ManufacturerModel::class, 'manufacturer_uuid', 'uuid');
     }

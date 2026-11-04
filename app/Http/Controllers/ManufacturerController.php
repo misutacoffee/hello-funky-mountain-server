@@ -47,7 +47,7 @@ class ManufacturerController extends Controller
      */
     public function show(string $uuid)
     {
-        $manufacturer = Manufacturer::where('uuid', $uuid)->with('manufacturerModels')->first();
+        $manufacturer = Manufacturer::where('uuid', $uuid)->with('models')->first();
         return response()->json($manufacturer);
     }
 

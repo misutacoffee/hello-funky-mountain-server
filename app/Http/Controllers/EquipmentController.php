@@ -16,9 +16,9 @@ class EquipmentController extends Controller
     public function index()
     {
         if(Auth::check()){
-            $equipment = Equipment::where('user_uuid', Auth::user()->uuid)->with(['manufacturerModel' => ['manufacturer']])->get();
+            $equipment = Equipment::where('user_uuid', Auth::user()->uuid)->with(['model' => ['manufacturer']])->get();
         }else{
-            $equipment = Equipment::with(['manufacturerModel' => ['manufacturer']])->get();
+            $equipment = Equipment::with(['model' => ['manufacturer']])->get();
         }
         return response()->json($equipment);
     }
@@ -62,7 +62,7 @@ class EquipmentController extends Controller
      */
     public function show(string $uuid)
     {
-        $equipment = Equipment::with(['manufacturerModel' => ['manufacturer']])->where('uuid', $uuid)->first();
+        $equipment = Equipment::with('model', 'manufacturer')->where('uuid', $uuid)->first();
         if (!$equipment) {
             return response()->json(['message' => 'Equipment not found'], 404);
         }
@@ -75,7 +75,7 @@ class EquipmentController extends Controller
     public function edit(Request $request, string $uuid)
     {
         $user = $request->user();
-        $equipment = Equipment::where('uuid', $uuid)->with('manufacturer', 'manufacturerModel')->first();
+        $equipment = Equipment::where('uuid', $uuid)->with('manufacturer', 'model')->first();
         $manufacturers = Manufacturer::get();
         $models = ManufacturerModel::get();
         return response()->json(['equipment' => $equipment, 'user' => $user, 'manufacturers' => $manufacturers, 'models' => $models]);

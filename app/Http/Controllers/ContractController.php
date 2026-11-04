@@ -100,6 +100,7 @@ class ContractController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        Contract::where('uuid', $uuid)->delete();
+        return response()->json(['success' => true, 'message' => "Contract successfully deleted from the database."]);
     }
 }
