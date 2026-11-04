@@ -17,7 +17,14 @@ class RentalController extends Controller
     {
         $user = $request->user();
         $rentals = Rental::where('user_uuid', $user->uuid)->with('contract')->get();
-        return response()->json($rentals);
+        return response()->json(compact('rentals'));
+    }
+
+    public function indexByContract(Request $request, string $uuid)
+    {
+        $contract = Contract::where('uuid', $uuid)->first();
+        $rentals = Rental::where('contract_uuid', $uuid)->get();
+        return response()->json(compact('contract', 'rentals'));
     }
 
     /**

@@ -56,7 +56,7 @@ class ContractController extends Controller
      */
     public function show(string $uuid)
     {
-        $contract = Contract::where('uuid', $uuid)->first();
+        $contract = Contract::where('uuid', $uuid)->with('rentals')->first();
         return response()->json($contract);
     }
 

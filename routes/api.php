@@ -35,3 +35,4 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
 Route::get('/authenticated-test-request', [DevController::class, 'authenticatedTestRequest'])->middleware('auth:sanctum');
 Route::get('/unauthenticated-test-request', [DevController::class, 'unauthenticatedTestRequest']);
+Route::get('/contracts/{uuid}/rentals', [RentalController::class, 'indexByContract']);

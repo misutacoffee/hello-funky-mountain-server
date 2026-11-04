@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->date('paid_date')->nullable();
             $table->uuid('rental_uuid')->nullable();
+            $table->uuid('contract_uuid')->nullable();
             $table->foreignUuid('user_uuid')->constrained('users', 'uuid')->onDelete('cascade');
             $table->uuid('uuid')->unique();
             $table->timestamps();

@@ -27,4 +27,14 @@ class Contract extends Model
         'user_uuid',
         'uuid',
     ];
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class, 'contract_uuid', 'uuid');
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'contract_uuid', 'uuid');
+    }
 }
