@@ -16,7 +16,21 @@ class InvoiceController extends Controller
     {
         $user = $request->user();
         $invoices = Invoice::where('user_uuid', $user->uuid)->with('contract', 'rental')->get();
-        return response()->json($invoices);
+        return response()->json(compact('invoices'));
+    }
+
+    public function indexByContract(Request $request, $contractUuid)
+    {
+        $contract = Contract::where('uuid', $contractUuid)->firstOrFail();
+        $invoices = Invoice::where('contract_uuid', $contractUuid)->with('contract', 'rental')->get();
+        return response()->json(compact('contract', 'invoices'));
+    }
+
+    public function indexByRental(Request $request, $rentalUuid)
+    {
+        $rental = Rental::where('uuid', $rentalUuid)->firstOrFail();
+        $invoices = Invoice::where('rental_uuid', $rentalUuid)->with('contract', 'rental')->get();
+        return response()->json(compact('rental', 'invoices'));
     }
 
     /**

@@ -36,5 +36,7 @@ Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
 Route::get('/authenticated-test-request', [DevController::class, 'authenticatedTestRequest'])->middleware('auth:sanctum');
 Route::get('/unauthenticated-test-request', [DevController::class, 'unauthenticatedTestRequest']);
 Route::get('/contracts/{uuid}/rentals', [RentalController::class, 'indexByContract'])->middleware('auth:sanctum');
+Route::get('/contracts/{uuid}/invoices', [InvoiceController::class, 'indexByContract'])->middleware('auth:sanctum');
 Route::get('/contracts/{uuid}/invoices/create', [InvoiceController::class, 'createByContract'])->middleware('auth:sanctum');
+Route::get('/rentals/{uuid}/invoices', [InvoiceController::class, 'indexByRental'])->middleware('auth:sanctum');
 Route::get('/rentals/{uuid}/invoices/create', [InvoiceController::class, 'createByRental'])->middleware('auth:sanctum');
