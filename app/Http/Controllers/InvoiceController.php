@@ -12,9 +12,11 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->user();
+        $invoices = Invoice::where('user_uuid', $user->uuid)->with('contract', 'rental')->get();
+        return response()->json($invoices);
     }
 
     /**
@@ -65,7 +67,8 @@ class InvoiceController extends Controller
      */
     public function show(string $uuid)
     {
-        //
+        $invoice = Invoice::where('uuid', $uuid)->with('contract', 'rental')->first();
+        return response()->json($invoice);
     }
 
     /**
