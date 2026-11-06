@@ -104,6 +104,7 @@ class ManufacturerModelController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        ManufacturerModel::where('uuid', $uuid)->delete();
+        return response()->json(['success' => true, 'message' => "Manufacturer successfully deleted from the database."]);
     }
 }

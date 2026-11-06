@@ -20,7 +20,7 @@ class EquipmentController extends Controller
         }else{
             $equipment = Equipment::with(['model' => ['manufacturer']])->get();
         }
-        return response()->json($equipment);
+        return response()->json(compact('equipment'));
     }
 
     /**
@@ -109,6 +109,7 @@ class EquipmentController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        Equipment::where('uuid', $uuid)->delete();
+        return response()->json(['success' => true, 'message' => "Equipment successfully deleted from the database."]);
     }
 }
