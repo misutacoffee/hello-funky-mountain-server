@@ -77,7 +77,7 @@ class InvoiceController extends Controller
             'due_date' => 'nullable|string', 
             'paid_date' => 'nullable|string', 
             'rental_uuid' => 'nullable|uuid', 
-            'contract_uuid' => 'nullable|uuid', 
+            'contract_uuid' => 'required|uuid', 
             'user_uuid' => 'required|uuid', 
             'uuid' => 'required|uuid', 
         ]);
@@ -122,7 +122,7 @@ class InvoiceController extends Controller
             'due_date' => 'nullable|string', 
             'paid_date' => 'nullable|string', 
             'rental_uuid' => 'nullable|uuid', 
-            'contract_uuid' => 'nullable|uuid', 
+            'contract_uuid' => 'required|uuid', 
             'user_uuid' => 'required|uuid', 
             'uuid' => 'required|uuid', 
         ]);
