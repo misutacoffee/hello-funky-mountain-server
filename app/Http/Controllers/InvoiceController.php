@@ -36,22 +36,31 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return response()->json(['success' => true]);
+        $user = $request->user();
+        $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        $rentals = Rental::where('user_uuid', $user->uuid)->get();
+        return response()->json(compact('contracts', 'rentals'));
     }
 
-    public function createByContract(string $contractUuid)
+    public function createByContract(Request $request, string $contractUuid)
     {
+        $user = $request->user();
+        $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        $rentals = Rental::where('user_uuid', $user->uuid)->get();
         $contract = Contract::where('uuis', $contractUuid)->firstOrFail();
-        return response()->json(compact('contract'));
+        return response()->json(compact('contract', 'contracts', 'rentals'));
     }
 
-    public function createByRental(string $rentalUuid)
+    public function createByRental(Request $request, string $rentalUuid)
     {
+        $user = $request->user();
+        $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        $rentals = Rental::where('user_uuid', $user->uuid)->get();
         $rental = Rental::where('uuid', $rentalUuid)->firstOrFail();
         $contract = Contract::where('uuid', $rental->contract_uuid)->first();
-        return response()->json(compact('rental', 'contract'));
+        return response()->json(compact('rental', 'contract', 'contracts', 'rentals'));
     }
 
     /**
@@ -88,12 +97,15 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $uuid)
+    public function edit(Request $request, string $uuid)
     {
+        $user = $request->user();
         $invoice = Invoice::where('uuid', $uuid)->firstOrFail();
         $contract = $invoice->contract_uuid ? Contract::where('uuid', $invoice->contract_uuid)->first() : null;
         $rental = $invoice->rental_uuid ? Rental::where('uuid', $invoice->rental_uuid)->first() : null;
-        return response()->json(compact('invoice'));
+        $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        $rentals = Rental::where('user_uuid', $user->uuid)->get();
+        return response()->json(compact('invoice', 'contract', 'rental', 'contracts', 'rentals'));
     }
 
     /**
@@ -123,6 +135,7 @@ class InvoiceController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        Invoice::where('uuid', $uuid)->delete();
+        return response()->json(['success' => true, 'message' => "This invoice has been deleted from the database."]);
     }
 }

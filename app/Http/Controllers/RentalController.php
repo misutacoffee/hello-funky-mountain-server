@@ -101,6 +101,7 @@ class RentalController extends Controller
      */
     public function destroy(string $uuid)
     {
-        //
+        Rental::where('uuid', $uuid)->delete();
+        return response()->json(['success' => true, 'message' => "This rental has been deleted from the database."]);
     }
 }
