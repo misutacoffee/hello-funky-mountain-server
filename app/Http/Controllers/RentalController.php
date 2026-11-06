@@ -34,7 +34,8 @@ class RentalController extends Controller
     {
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
-        return response()->json(['contracts' => $contracts]);
+        $equipment = Equipment::where('user_uuid', $user->uuid)->get();
+        return response()->json(compact('contracts', 'equipment'));
     }
 
     /**
@@ -74,8 +75,9 @@ class RentalController extends Controller
     {
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
+        $equipment = Equipment::where('user_uuid', $user->uuid)->get();
         $rental = Rental::where('uuid', $uuid)->with('contract')->first();
-        return response()->json(['contracts' => $contracts, 'rental' => $rental]);
+        return response()->json(compact('contracts', 'equipment', 'rental'));
     }
 
     /**
