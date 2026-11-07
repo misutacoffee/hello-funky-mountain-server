@@ -7,6 +7,7 @@ use App\Models\Contract;
 use App\Models\Equipment;
 use App\Models\Invoice;
 use App\Models\Rental;
+use App\Models\RentalEquipment;
 
 class RentalController extends Controller
 {
@@ -75,9 +76,10 @@ class RentalController extends Controller
     {
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
-        $equipment = Equipment::where('user_uuid', $user->uuid)->get();
-        $rental = Rental::where('uuid', $uuid)->with('contract')->first();
-        return response()->json(compact('contracts', 'equipment', 'rental'));
+        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get();
+        $rental = Rental::where('uuid', $uuid)->with('contract', 'rentalEquipment')->first();
+        $rentalEquipment = RentalEquipment::where('rental_uuid', $uuid)->get(); // necessary if pulled with rental collection?
+        return response()->json(compact('contracts', 'equipment', 'rental', 'rentalEquipment'));
     }
 
     /**
