@@ -52,8 +52,10 @@ class RentalController extends Controller
             'contract_uuid' => 'required|uuid', 
             'user_uuid' => 'required|uuid', 
             'uuid' => 'required|uuid', 
+            'rental_equipment' => 'required|array', 
         ]);
-        $rental = Rental::create($request->all());
+        $rental = Rental::create($request->except('rental_equipment'));
+        // rentalEquipment
         return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully stored to the database."]);
     }
 
@@ -78,8 +80,7 @@ class RentalController extends Controller
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
         $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get();
         $rental = Rental::where('uuid', $uuid)->with('contract', 'rentalEquipment')->first();
-        $rentalEquipment = RentalEquipment::where('rental_uuid', $uuid)->get(); // necessary if pulled with rental collection?
-        return response()->json(compact('contracts', 'equipment', 'rental', 'rentalEquipment'));
+        return response()->json(compact('contracts', 'equipment', 'rental'));
     }
 
     /**
@@ -95,8 +96,10 @@ class RentalController extends Controller
             'contract_uuid' => 'required|uuid', 
             'user_uuid' => 'required|uuid', 
             'uuid' => 'required|uuid', 
+            'rental_equipment' => 'required|array', 
         ]);
-        $rental = Rental::where('uuid', $uuid)->update($request->all());
+        $rental = Rental::where('uuid', $uuid)->update($request->except('rental_equipment'));
+        // rentalEquipment
         return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully updated to the database."]);
     }
 

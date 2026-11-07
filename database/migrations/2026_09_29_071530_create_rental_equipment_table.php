@@ -16,8 +16,9 @@ return new class extends Migration
             $table->uuid('rental_uuid');
             $table->uuid('equipment_uuid');
             $table->integer('quantity')->default(1);
-            $table->decimal('unit_price', 10, 2)->default(0.00);
-            $table->decimal('total_price', 10, 2)->default(0.00);
+            $table->string('unit')->nullable();
+            $table->decimal('price', 10, 2)->default(0.00);
+            $table->decimal('total', 10, 2)->default(0.00);
             $table->text('note')->nullable();
             $table->uuid('uuid')->unique();
             $table->timestamps();

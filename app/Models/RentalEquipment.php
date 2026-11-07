@@ -14,8 +14,9 @@ class RentalEquipment extends Model
         'rental_uuid', 
         'equipment_uuid', 
         'quantity', 
-        'unit_price', 
-        'total_price', 
+        'unit', 
+        'price', 
+        'total', 
         'note', 
         'uuid', 
     ];
