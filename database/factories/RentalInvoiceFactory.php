@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Model;
+use App\Models\Contract;
 use App\Models\Rental;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +24,7 @@ class RentalInvoiceFactory extends Factory
         $amount = fake()->randomFloat(2, 1, 99999999);
         $tax = $amount * 0.08;
         return [
+            'contract_uuid' => Contract::inRandomOrder()->first()->uuid, 
             'rental_uuid' => Rental::inRandomOrder()->first()->uuid, 
             'purchase_order_number' => null, 
             'amount' => $amount, 

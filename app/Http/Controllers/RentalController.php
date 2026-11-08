@@ -52,10 +52,20 @@ class RentalController extends Controller
             'contract_uuid' => 'required|uuid', 
             'user_uuid' => 'required|uuid', 
             'uuid' => 'required|uuid', 
-            'rental_equipment' => 'required|array', 
+            'rental_equipment.*.rental_uuid' => 'required|uuid', // can also verify against the rental uuid
+            'rental_equipment.*.equipment_uuid' => 'required|uuid', 
+            'rental_equipment.*.quantity' => 'nullable|string', 
+            'rental_equipment.*.unit' => 'nullable|string', 
+            'rental_equipment.*.price' => 'nullable|decimal', 
+            'rental_equipment.*.total' => 'nullable|decimal',
+            'rental_equipment.*.note' => 'nullable|string', 
+            'rental_equipment.*.uuid' => 'required|uuid',  
         ]);
         $rental = Rental::create($request->except('rental_equipment'));
-        // rentalEquipment
+        foreach($request['rental_equipment'] as $rentalEquipment){
+            RentalEquipment::create($rentalEquipment);
+        }
+        $rental->with('contract', 'rentalEquipment');
         return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully stored to the database."]);
     }
 
@@ -65,9 +75,9 @@ class RentalController extends Controller
     public function show(Request $request, string $uuid)
     {
         $user = $request->user();
-        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get();
+        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get(); // needed?
         $invoices = Invoice::where('rental_uuid', $uuid)->get();
-        $rental = Rental::where('uuid', $uuid)->with('contract', 'rentalEquipment')->first();
+        $rental = Rental::where('uuid', $uuid)->with(['contract', 'rentalEquipment' => ['equipment']])->first();
         return response()->json(compact('equipment', 'invoices', 'rental'));
     }
 
@@ -96,10 +106,22 @@ class RentalController extends Controller
             'contract_uuid' => 'required|uuid', 
             'user_uuid' => 'required|uuid', 
             'uuid' => 'required|uuid', 
-            'rental_equipment' => 'required|array', 
+            'rental_equipment.*.rental_uuid' => 'required|uuid', // can also verify against the rental uuid
+            'rental_equipment.*.equipment_uuid' => 'required|uuid', 
+            'rental_equipment.*.quantity' => 'nullable|string', 
+            'rental_equipment.*.unit' => 'nullable|string', 
+            'rental_equipment.*.price' => 'nullable|decimal', 
+            'rental_equipment.*.total' => 'nullable|decimal',
+            'rental_equipment.*.note' => 'nullable|string', 
+            'rental_equipment.*.uuid' => 'required|uuid',  
         ]);
         $rental = Rental::where('uuid', $uuid)->update($request->except('rental_equipment'));
-        // rentalEquipment
+        $rentalEquipment = $request['rental_equipment'] || [];
+        foreach($request['rental_equipment'] as $rentalEquipment){
+            // create - new items
+            // update - existing items
+            // delete - no longer present items
+        }
         return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully updated to the database."]);
     }
 

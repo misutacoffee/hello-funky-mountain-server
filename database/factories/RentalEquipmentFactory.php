@@ -22,8 +22,9 @@ class RentalEquipmentFactory extends Factory
             'rental_uuid' => Rental::inRandomOrder()->first()->uuid,
             'equipment_uuid' => Equipment::inRandomOrder()->first()->uuid,
             'quantity' => fake()->randomNumber(2),
-            'unit_price' => fake()->randomFloat(2, 10, 1000),
-            'total_price' => fake()->randomFloat(2, 100, 10000),
+            'unit' => 'hour', 
+            'price' => fake()->randomFloat(2, 10, 1000),
+            'total' => fake()->randomFloat(2, 100, 10000),
             'uuid' => \Illuminate\Support\Str::uuid(),
         ];
     }

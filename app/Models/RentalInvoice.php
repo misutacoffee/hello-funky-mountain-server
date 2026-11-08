@@ -9,4 +9,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class RentalInvoice extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'purchase_order_number', 
+        'invoice_date', 
+        'amount', 
+        'tax', 
+        'status', 
+        'due_date', 
+        'paid_date', 
+        'rental_uuid', 
+        'contract_uuid', 
+        'user_uuid', 
+        'uuid', 
+    ];
+
+    public function contract()
+    {
+        return $this->hasOne(Contract::class, 'uuid', 'contract_uuid');
+    }
+
+    public function rental()
+    {
+        return $this->hasOne(Rental::class, 'uuid', 'rental_uuid');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'uuid', 'user_uuid');
+    }
 }

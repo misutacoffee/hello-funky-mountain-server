@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->uuid('rental_uuid');
             $table->uuid('equipment_uuid');
-            $table->integer('quantity')->default(1);
+            $table->integer('quantity')->nullable();
             $table->string('unit')->nullable();
-            $table->decimal('price', 10, 2)->default(0.00);
-            $table->decimal('total', 10, 2)->default(0.00);
+            $table->decimal('price', 10, 2)->nullable();
+            $table->decimal('total', 10, 2)->nullable();
             $table->text('note')->nullable();
             $table->uuid('uuid')->unique();
             $table->timestamps();
