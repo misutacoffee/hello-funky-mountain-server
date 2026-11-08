@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Equipment;
 use App\Models\Manufacturer;
 use App\Models\ManufacturerModel;
+use App\Models\Rental;
+use App\Models\RentalEquipment;
 
 class EquipmentController extends Controller
 {
@@ -66,7 +68,9 @@ class EquipmentController extends Controller
         if (!$equipment) {
             return response()->json(['message' => 'Equipment not found'], 404);
         }
-        return response()->json($equipment);
+        $rentalUuids = RentalEquipment::where('equipment_uuid', $uuid)->pluck('rental_uuid')->toArray();
+        $rentals = Rental::whereIn('uuid', $rentalUuids)->with('contract', 'rentalEquipment', 'invoices')->get();
+        return response()->json(compact('equipment', 'rentals'));
     }
 
     /**

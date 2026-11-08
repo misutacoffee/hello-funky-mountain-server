@@ -13,8 +13,8 @@ class ManufacturerModelController extends Controller
      */
     public function index()
     {
-        $manufacturerModels = ManufacturerModel::get();
-        return response()->json($manufacturerModels);
+        $models = ManufacturerModel::with('manufacturer')->get();
+        return response()->json(compact('models'));
     }
 
     /**
@@ -22,8 +22,9 @@ class ManufacturerModelController extends Controller
      */
     public function indexByManufacturer(string $manufacturerUuid)
     {
-        $manufacturer = Manufacturer::where('uuid', $manufacturerUuid)->with('manufacturerModels')->first();
-        return response()->json($manufacturer);
+        $manufacturer = Manufacturer::where('uuid', $manufacturerUuid)->firstOrFail();
+        $models = ManufacturerModel::where('manufacturer_uuid', $manufacturerUuid)->with('manufacturer')->get();
+        return response()->json(compact('manufacturer', 'models'));
     }
 
     /**
