@@ -21,6 +21,7 @@ class RentalFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->words(2, true), 
             'user_uuid' => User::inRandomOrder()->first()->uuid,
             'contract_uuid' => Contract::inRandomOrder()->first()->uuid,
             'rental_date' => fake()->dateTimeBetween('-1 year', 'now'),

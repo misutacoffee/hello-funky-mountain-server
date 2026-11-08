@@ -11,6 +11,7 @@ class Rental extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'rental_date',
         'return_date',
         'description',

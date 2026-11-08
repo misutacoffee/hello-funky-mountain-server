@@ -45,6 +45,7 @@ class RentalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'name' => 'nullable|string', 
             'rental_date' => 'nullable|string', 
             'return_date' => 'nullable|string', 
             'description' => 'nullable|string', 
@@ -101,6 +102,7 @@ class RentalController extends Controller
     public function update(Request $request, string $uuid)
     {
         $request->validate([
+            'name' => 'nullable|string', 
             'rental_date' => 'nullable|string', 
             'return_date' => 'nullable|string', 
             'description' => 'nullable|string', 
