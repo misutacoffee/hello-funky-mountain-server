@@ -49,7 +49,7 @@ class InvoiceController extends Controller
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
         $rentals = Rental::where('user_uuid', $user->uuid)->get();
-        $contract = Contract::where('uuis', $contractUuid)->firstOrFail();
+        $contract = Contract::where('uuid', $contractUuid)->firstOrFail();
         return response()->json(compact('contract', 'contracts', 'rentals'));
     }
 
