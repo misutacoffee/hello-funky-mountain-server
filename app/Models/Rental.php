@@ -31,4 +31,9 @@ class Rental extends Model
         return $this->hasMany(RentalEquipment::class, 'rental_uuid', 'uuid');   
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'rental_uuid', 'uuid');
+    }
+
 }
