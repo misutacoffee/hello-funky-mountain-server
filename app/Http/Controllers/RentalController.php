@@ -35,7 +35,7 @@ class RentalController extends Controller
     {
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
-        $equipment = Equipment::where('user_uuid', $user->uuid)->get();
+        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model', 'manufacturer')->get();
         return response()->json(compact('contracts', 'equipment'));
     }
 
@@ -88,9 +88,11 @@ class RentalController extends Controller
     {
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
-        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get();
+        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model', 'manufacturer')->get();
         $rental = Rental::where('uuid', $uuid)->with('contract', 'rentalEquipment')->first();
-        return response()->json(compact('contracts', 'equipment', 'rental'));
+        $rentalEquipment = RentalEquipment::where('rental_uuid', $uuid)->get();
+        $contract = Contract::where('uuid', $rental->contract_uuid)->first();
+        return response()->json(compact('contracts', 'equipment', 'rental', 'rentalEquipment', 'contract'));
     }
 
     /**
@@ -116,11 +118,10 @@ class RentalController extends Controller
             'rental_equipment.*.uuid' => 'required|uuid',  
         ]);
         $rental = Rental::where('uuid', $uuid)->update($request->except('rental_equipment'));
-        $rentalEquipment = $request['rental_equipment'] || [];
+        $equipmentUuids = collect($request['rental_equipment'] || [])->pluck('equipment_uuid');
+        RentalEquipment::where('rental_uuid', $uuid)->whereNotIn('equipment_uuid', $equipmentUuids)->delete();
         foreach($request['rental_equipment'] as $rentalEquipment){
-            // create - new items
-            // update - existing items
-            // delete - no longer present items
+            RentalEquipment::updateOrCreate(['uuid' => $rentalEquipment['uuid']], $rentalEquipment);
         }
         return response()->json(['rental' => $rental, 'success' => true, 'message' => "Rental successfully updated to the database."]);
     }
