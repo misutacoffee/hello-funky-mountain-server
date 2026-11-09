@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contract;
+use App\Models\Invoice;
+use App\Models\Rental;
 
 class ContractController extends Controller
 {
@@ -14,7 +16,7 @@ class ContractController extends Controller
     {
         $user = $request->user();
         $contracts = Contract::where('user_uuid', $user->uuid)->get();
-        return response()->json($contracts);
+        return response()->json(compact('contracts'));
     }
 
     /**
@@ -56,8 +58,10 @@ class ContractController extends Controller
      */
     public function show(string $uuid)
     {
-        $contract = Contract::where('uuid', $uuid)->with('rentals')->first();
-        return response()->json($contract);
+        $contract = Contract::where('uuid', $uuid)->firstOrFail();
+        $invoices = Invoice::where('contract_uuid', $contract->uuid)->get();
+        $rentals = Rental::where('contract_uuid', $contract->uuid)->with('rentalEquipment')->get();
+        return response()->json(compact('contract', 'invoices', 'rentals'));
     }
 
     /**
