@@ -11,6 +11,7 @@ class RentalEquipment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name', 
         'rental_uuid', 
         'equipment_uuid', 
         'quantity', 

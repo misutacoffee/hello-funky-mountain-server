@@ -76,11 +76,12 @@ class RentalController extends Controller
     public function show(Request $request, string $uuid)
     {
         $user = $request->user();
-        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model')->get(); // needed?
+        $equipment = Equipment::where('user_uuid', $user->uuid)->with('model', 'manufacturer')->get(); // needed?
         $invoices = Invoice::where('rental_uuid', $uuid)->get();
-        $rental = Rental::where('uuid', $uuid)->with('contract')->first();
+        $rental = Rental::where('uuid', $uuid)->first();
+        $contract = Contract::where('uuid', $rental->contract_uuid)->first();
         $rentalEquipment = RentalEquipment::where('rental_uuid', $uuid)->with(['equipment' => ['manufacturer', 'model']])->get();
-        return response()->json(compact('equipment', 'invoices', 'rental', 'rentalEquipment'));
+        return response()->json(compact('contract', 'equipment', 'invoices', 'rental', 'rentalEquipment'));
     }
 
     /**
