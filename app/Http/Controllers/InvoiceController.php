@@ -69,10 +69,12 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'title' => 'nullable|string', 
             'purchase_order_number' => 'nullable|string', 
             'invoice_date' => 'nullable|string', 
-            'amount' => 'nullable|string', 
+            'sub_total' => 'nullable|string', 
             'tax' => 'nullable|string', 
+            'total' => 'nullable|string', 
             'status' => 'nullable|string', 
             'due_date' => 'nullable|string', 
             'paid_date' => 'nullable|string', 
@@ -114,10 +116,12 @@ class InvoiceController extends Controller
     public function update(Request $request, string $uuid)
     {
         $request->validate([
+            'title' => 'nullable|string', 
             'purchase_order_number' => 'nullable|string', 
             'invoice_date' => 'nullable|string', 
-            'amount' => 'nullable|string', 
+            'sub_total' => 'nullable|string', 
             'tax' => 'nullable|string', 
+            'total' => 'nullable|string', 
             'status' => 'nullable|string', 
             'due_date' => 'nullable|string', 
             'paid_date' => 'nullable|string', 

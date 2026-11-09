@@ -9,18 +9,19 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 class Invoice extends Model
 {
     protected $fillable = [
-        'rental_uuid',
-        'purchase_order_number',
-        'invoice_date',
-        'amount',
-        'tax',
-        'status',
-        'due_date',
-        'paid_date',
-        'rental_uuid',
-        'contract_uuid',
-        'user_uuid',
-        'uuid',
+        'title', 
+        'purchase_order_number', 
+        'invoice_date', 
+        'sub_total', 
+        'tax', 
+        'total', 
+        'status', 
+        'due_date', 
+        'paid_date', 
+        'rental_uuid', 
+        'contract_uuid', 
+        'user_uuid', 
+        'uuid', 
     ];
 
     public function user()

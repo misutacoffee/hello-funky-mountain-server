@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('rental_invoices', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('purchase_order_number')->nullable();
             $table->date('invoice_date')->nullable();
-            $table->decimal('amount', 10, 2)->nullable();
+            $table->decimal('sub_total', 10, 2)->nullable();
             $table->decimal('tax', 10, 2)->nullable();
+            $table->decimal('total', 10, 2)->nullable();
             $table->string('status')->nullable();
             $table->date('due_date')->nullable();
             $table->date('paid_date')->nullable();

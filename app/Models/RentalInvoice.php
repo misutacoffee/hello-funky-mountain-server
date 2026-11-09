@@ -11,10 +11,12 @@ class RentalInvoice extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title', 
         'purchase_order_number', 
         'invoice_date', 
-        'amount', 
+        'sub_total', 
         'tax', 
+        'total', 
         'status', 
         'due_date', 
         'paid_date', 

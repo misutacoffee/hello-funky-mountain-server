@@ -21,14 +21,17 @@ class RentalInvoiceFactory extends Factory
      */
     public function definition(): array
     {
-        $amount = fake()->randomFloat(2, 1, 99999999);
-        $tax = $amount * 0.08;
+        $subtotal = fake()->randomFloat(2, 1, 99999999);
+        $tax = round($subtotal * 0.08, 2);
+        $total = round($subtotal + $tax, 2);
         return [
+            'title' => fake()->words(3, true), 
             'contract_uuid' => Contract::inRandomOrder()->first()->uuid, 
             'rental_uuid' => Rental::inRandomOrder()->first()->uuid, 
             'purchase_order_number' => null, 
-            'amount' => $amount, 
+            'sub_total' => $subtotal, 
             'tax' => $tax, 
+            'total' => $total, 
             'status' => null, 
             'invoice_date' => fake()->dateTimeBetween('-1 year', 'now'), 
             'due_date' => fake()->dateTimeBetween('-1 year', 'now'), 
