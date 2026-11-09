@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
+use App\Mail\EmailVerification;
 use App\Mail\PasswordResetNotification;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\URL;
 
 class AuthController extends Controller
 {
@@ -68,6 +71,7 @@ class AuthController extends Controller
                 ['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]
             );
             $url = config('app.url').'/password-reset?token='.$token.'&email='.urlencode($user->email);
+
             Mail::to($user->email)->send(new PasswordResetNotification($user, $url));
         }
         return response()->json(['user' => $user, 'success' => true, 'message' => "Please check your inbox for a password reset notification."]);
@@ -141,7 +145,21 @@ class AuthController extends Controller
         ]);
         $user = User::create($request->all());
         $token = $user->createToken('token')->plainTextToken;
-        return response()->json(['user' => $user, 'token' => $token, 'success' => true, 'message' => "User successfully registered."]);
+        // send verification email
+        $url = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $user->id,
+                'hash' => sha1($user->getEmailForVerification()),
+            ], 
+            absolute: false, 
+        );
+        $url = config('app.url').str_replace('/api', '', $url);
+        Mail::to($user->email)->send(new EmailVerification($user, $url));
+        $id = $user->id;
+        $hash = sha1($user->getEmailForVerification());
+        return response()->json(['url' => $url, 'id' => $id, 'hash' => $hash, 'user' => $user, 'token' => $token, 'success' => true, 'message' => "User successfully registered."]);
     }
 
     public function verifyEmail(Request $request)

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DevController;
 use App\Http\Controllers\ContractController;
@@ -38,5 +39,12 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->middleware('auth:sanctum');
 
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return response()->json(['success' => true, 'message' => "Email successfully verified."]);
+})->middleware(['auth:sanctum'])->name('verification.verify');
 
-
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return response()->json(['success' => true, 'message' => "Verification link sent."]);
+})->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
