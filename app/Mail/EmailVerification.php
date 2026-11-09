@@ -41,7 +41,7 @@ class EmailVerification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.email-verification',
+            markdown: 'mail.email-verification',
             with: [
                 'name' => $this->user->name, 
                 'email' => $this->user->email, 

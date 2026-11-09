@@ -64,8 +64,6 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         if($user){
             $token = bin2hex(random_bytes(32));
-            // DB::table('password_reset_tokens')->where('email', $user->email)->delete();
-            // DB::table('password_reset_tokens')->insert(['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]);
             DB::table('password_reset_tokens')->updateOrInsert(
                 ['email' => $user->email], 
                 ['email' => $user->email, 'token' => Hash::make($token), 'created_at' => now()]
@@ -145,7 +143,6 @@ class AuthController extends Controller
         ]);
         $user = User::create($request->all());
         $token = $user->createToken('token')->plainTextToken;
-        // send verification email
         $url = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
@@ -157,9 +154,7 @@ class AuthController extends Controller
         );
         $url = config('app.url').str_replace('/api', '', $url);
         Mail::to($user->email)->send(new EmailVerification($user, $url));
-        $id = $user->id;
-        $hash = sha1($user->getEmailForVerification());
-        return response()->json(['url' => $url, 'id' => $id, 'hash' => $hash, 'user' => $user, 'token' => $token, 'success' => true, 'message' => "User successfully registered."]);
+        return response()->json(['user' => $user, 'token' => $token, 'success' => true, 'message' => "User successfully registered."]);
     }
 
     public function verifyEmail(Request $request)
